@@ -100,6 +100,12 @@ namespace Definitions
                 registeredDefinitions.Add(definition.GetType(), definitions);
                 NewDefinitionTypeEncountered?.Invoke(definition, new DefinitionEventargs(definition));
             }
+
+            if (definition.Name == null)
+            {
+                throw new DefinitionException($"Definition of type {definition.GetType().Name} has null name, which is not allowed.");
+            }
+
             if (definitions.ContainsKey(definition.Name))
             {
                 if (SkipDuplicateDefinitions)
