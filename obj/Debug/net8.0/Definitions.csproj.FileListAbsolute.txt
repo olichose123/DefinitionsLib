@@ -1,4 +1,0 @@
-C:\local\projects\godot\Definitions\obj\Debug\net8.0\Definitions.GeneratedMSBuildEditorConfig.editorconfig
-C:\local\projects\godot\Definitions\obj\Debug\net8.0\Definitions.AssemblyInfoInputs.cache
-C:\local\projects\godot\Definitions\obj\Debug\net8.0\Definitions.AssemblyInfo.cs
-C:\local\projects\godot\Definitions\obj\Debug\net8.0\Definitions.csproj.CoreCompileInputs.cache
