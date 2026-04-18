@@ -76,3 +76,6 @@ public class MyGenericDefinition : Definition
     }
 }
 ```
+
+## AI Warning
+Generative AI has only been used to help write the README.md file and documentation, while the code itself is written and tested entirely by a human.
