@@ -18,11 +18,12 @@ public class MyOtherDefinition : Definition
     public Reference<MyDefinition> ReferenceToMyDefinition { get; set; }
 }
 
+// Find all subclasses of definitions and populate the list of derived types in the DefinitionTypeResolver. This is necessary for the polymorphic serialization to work, as it needs to know about all the derived types of Definition in order to properly serialize and deserialize them.
+DefinitionTypeResolver.DerivedTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(Definition))).ToList();
+
 // Register a new definition
 var myDefinition = new MyDefinition { Name = "MyDefinition1", SomeProperty = "Hello" };
 var myOtherDefinition = new MyOtherDefinition { Name = "MyOtherDefinition1", SomeOtherProperty = 42, ReferenceToMyDefinition = new Reference<MyDefinition>(myDefinition) };
-
-// Definitions are automatically registered
 
 // Access definitions by type and name
 myDefinition == Definition.Get<MyDefinition>("MyDefinition1"); // true
