@@ -8,8 +8,20 @@ namespace Definitions
     /// </summary>
     public class Definition : IJsonOnDeserialized
     {
-        public static event EventHandler DefinitionRegistered = delegate { };
-        public static event EventHandler NewDefinitionTypeEncountered = delegate { };
+        /// <summary>
+        /// Event that is raised when a definition is registered. The event handler receives the registered definition and its type as arguments. This allows for external code to react to the registration of definitions, such as by performing additional validation, logging, or triggering other actions based on the newly registered definition.
+        /// </summary>
+        public static event EventHandler<DefinitionEventargs>? DefinitionRegistered;
+
+        /// <summary>
+        /// Event that is raised when a new definition type is encountered during registration. The event handler receives the registered definition and its type as arguments. This allows for external code to react to the discovery of new definition types, such as by performing additional setup, logging, or triggering other actions based on the newly discovered definition type.
+        /// </summary>
+        public static event EventHandler<DefinitionEventargs>? NewDefinitionTypeEncountered;
+
+        /// <summary>
+        /// Event that is raised when a definition is replaced during registration. This occurs when a definition is registered with a name that already exists for that type, and the SkipDuplicateDefinitions property is false. The event handler receives the new definition that is being registered and its type as arguments. This allows for external code to react to the replacement of definitions, such as by performing additional validation, logging, or triggering other actions based on the new definition that is replacing the existing one. Note that the existing definition that is being replaced is not provided in the event arguments, so if you need to know about the existing definition, you would need to check for it in the DefinitionRegistered event before it gets replaced.
+        /// </summary>
+        public static event EventHandler<DefinitionEventargs>? DefinitionReplaced;
 
         public static JsonSerializerOptions JsonSerializerOptions { get; private set; } = new JsonSerializerOptions
         {
@@ -18,6 +30,10 @@ namespace Definitions
             TypeInfoResolver = new DefinitionTypeResolver(),
             Converters = { new ReferenceJsonConverter() },
         };
+
+        /// <summary>
+        /// If true, when a definition is registered with a name that already exists for that type, it will be ignored instead of throwing an exception. This allows for definitions to be overridden by later definitions in the same file or in different files, without needing to worry about the order of registration. However, it also means that if there are duplicate definitions with the same name and type, only the first one will be registered and the others will be ignored, which could lead to unexpected behavior if not used carefully.
+        /// </summary>
         public static bool SkipDuplicateDefinitions { get; set; } = false;
 
         static Dictionary<Type, Dictionary<string, Definition>> registeredDefinitions = new();
@@ -79,7 +95,6 @@ namespace Definitions
             {
                 definitions = new Dictionary<string, Definition>();
                 registeredDefinitions.Add(definition.GetType(), definitions);
-                DefinitionTypeResolver.AddDerivedType(definition.GetType(), definition.GetType().Name);
                 NewDefinitionTypeEncountered?.Invoke(definition, new DefinitionEventargs(definition));
             }
             if (definitions.ContainsKey(definition.Name))
@@ -88,7 +103,10 @@ namespace Definitions
                 {
                     return;
                 }
-                throw new DefinitionException($"Definition with name {definition.Name} already exists for type {definition.GetType().Name}");
+                else
+                {
+                    DefinitionReplaced?.Invoke(definition, new DefinitionEventargs(definition));
+                }
             }
             definitions.Add(definition.Name, definition);
             DefinitionRegistered?.Invoke(definition, new DefinitionEventargs(definition));
