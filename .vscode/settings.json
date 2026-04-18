@@ -1,0 +1,18 @@
+{
+    "workbench.colorCustomizations": {
+        "folderPathColor.custom1": "#FF4488",
+        "folderPathColor.custom2": "#88ff44",
+        "folderPathColor.custom3": "#4488FF",
+        "activityBar.background": "#580F33",
+        "titleBar.activeBackground": "#7C1648",
+        "titleBar.activeForeground": "#FEFCFD",
+        "titleBar.inactiveBackground": "#580F33",
+        "titleBar.inactiveForeground": "#FEFCFD",
+        "statusBar.background": "#580F33",
+        "statusBar.foreground": "#FEFCFD",
+        "statusBar.debuggingBackground": "#580F33",
+        "statusBar.debuggingForeground": "#FEFCFD",
+        "statusBar.noFolderBackground": "#580F33",
+        "statusBar.noFolderForeground": "#FEFCFD"
+    }
+}
