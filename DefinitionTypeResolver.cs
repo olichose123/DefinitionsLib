@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
@@ -11,12 +12,13 @@ namespace Definitions
     /// </summary>
     public class DefinitionTypeResolver : DefaultJsonTypeInfoResolver
     {
+        public static List<Type>? DerivedTypes;
+
         public override JsonTypeInfo GetTypeInfo(Type type, JsonSerializerOptions options)
         {
             JsonTypeInfo jsonTypeInfo = base.GetTypeInfo(type, options);
 
-            Type basePointType = typeof(Definition);
-            if (jsonTypeInfo.Type == basePointType)
+            if (jsonTypeInfo.Type == typeof(Definition))
             {
                 jsonTypeInfo.PolymorphismOptions = new JsonPolymorphismOptions
                 {
@@ -25,11 +27,16 @@ namespace Definitions
                     UnknownDerivedTypeHandling = System.Text.Json.Serialization.JsonUnknownDerivedTypeHandling.FailSerialization,
                 };
 
-                var types = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(Definition)));
-
-                foreach (var derivedType in types)
+                if (DerivedTypes != null)
                 {
-                    jsonTypeInfo.PolymorphismOptions.DerivedTypes.Add(new JsonDerivedType(derivedType, derivedType.Name.ToLowerInvariant()));
+                    foreach (var derivedType in DerivedTypes)
+                    {
+                        jsonTypeInfo.PolymorphismOptions.DerivedTypes.Add(new JsonDerivedType(derivedType, derivedType.Name.ToLowerInvariant()));
+                    }
+                }
+                else
+                {
+                    throw new Exception("DerivedTypes list is null. Please initialize it with the list of derived types of Definition before using the DefinitionTypeResolver.");
                 }
             }
 
