@@ -1,11 +1,11 @@
-# C# Definitions Library
+# Olib.Definitions : A C# Library
 This library provides a system for defining and registering definitions in C#. It allows for easy serialization and deserialization of definitions to and from JSON, as well as support for polymorphic types and reference handling. The library also includes events for when definitions are registered, when new definition types are encountered, and when definitions are replaced, allowing for easy integration with other systems that may need to react to changes in the definitions.
 
 This library could be useful for games, where you can load game data from JSON files and want to have a flexible system for defining different types of game data (e.g. items, characters, quests, etc.) without needing to write custom code for each type. It could also be useful for any application that needs to manage a large number of definitions or configurations that can be easily serialized and deserialized.
 
 ## Usage
 ```csharp
-using Definitions;
+using Olib.Definitions;
 
 public class MyDefinition : Definition
 {
@@ -20,6 +20,9 @@ public class MyOtherDefinition : Definition
 
 // Find all subclasses of definitions and populate the list of derived types in the DefinitionTypeResolver. This is necessary for the polymorphic serialization to work, as it needs to know about all the derived types of Definition in order to properly serialize and deserialize them.
 DefinitionTypeResolver.DerivedTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(Definition))).ToList();
+// This is not automatic for two reasons:
+// 1. You might need control over which definition is registered
+// 2. GetExecutingAssembly() might not return the correct assembly context if called from within the Olib.Definitions namespace
 
 // Register a new definition
 var myDefinition = new MyDefinition { Name = "MyDefinition1", SomeProperty = "Hello" };
