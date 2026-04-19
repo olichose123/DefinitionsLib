@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Definitions
+namespace Olib.Definitions
 {
     /// <summary>
     /// A definition is a named object that can be registered and retrieved by name. Definitions can be deserialized from JSON and can also be serialized to JSON. The class provides static methods for retrieving definitions by name and for retrieving all definitions of a specific type. It also provides events for when a definition is registered and when a new definition type is encountered. The class implements the IJsonOnDeserialized interface to allow for custom logic to be executed after deserialization, such as registering the definition.

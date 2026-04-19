@@ -1,8 +1,7 @@
-using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Definitions
+namespace Olib.Definitions
 {
     /// <summary>
     /// A Json converter for the Reference class. It serializes a Reference as the name of the definition it references, and deserializes a Reference from a string containing the name of the definition. This allows for easy serialization and deserialization of References in JSON, while still allowing for lazy loading of definitions when the Get method is called on the Reference.

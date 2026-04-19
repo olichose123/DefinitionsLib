@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 
-namespace Definitions
+namespace Olib.Definitions
 {
     /// <summary>
     /// A Type Resolver for the Definition class. It overrides the GetTypeInfo method to add polymorphism options for the Definition class, allowing for derived types of Definition to be deserialized based on a type discriminator property in the JSON. The derived types are added to the polymorphism options based on the types that are found in the executing assembly that are subclasses of Definition. This allows for easy deserialization of JSON into the correct derived type of Definition based on the type discriminator property in the JSON.

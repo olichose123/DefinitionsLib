@@ -1,4 +1,4 @@
-namespace Definitions
+namespace Olib.Definitions
 {
     /// <summary>
     /// A reference is a wrapper around a definition that allows for lazy loading of the definition and json serialization as a name. It can be initialized with either the name of the definition or the definition itself. When the Get method is called, it will return the definition instance, loading it from the registered definitions if it has not already been loaded. If the name is null, Get will return null. This allows for references to definitions that may not exist at the time of reference creation, and for definitions to be loaded on demand.
